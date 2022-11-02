@@ -109,6 +109,18 @@
           <td>sort, newest, offset, limit,rating, has_image</td>
         </tr>
         <tr>
+          <th>예약 페이지</th>
+          <td>Get</td>
+          <td>/orders/reservations</td>
+          <td>room_id, start_date, end_date</td>
+        </tr>
+        <tr>
+          <th>예약 페이지(예약 기능)</th>
+          <td>Post</td>
+          <td>/orders/reservations</td>
+          <td></td>
+        </tr>
+        <tr>
           <th>리뷰 작성기능</th>
           <td>Post</td>
           <td>/users/reviews</td>
