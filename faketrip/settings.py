@@ -15,7 +15,8 @@ import pymysql
 
 from pathlib import Path
 
-from my_settings import DATABASES, SECRET_KEY, ALGORITHM, AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY
+from my_settings import DATABASES, SECRET_KEY, ALGORITHM,\
+    AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY, AWS_S3_CONFIG
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -158,25 +159,8 @@ pymysql.install_as_MySQLdb()
 
 ALGORITHM = ALGORITHM
 
-# AWS setting
+# AWS settings
 
 AWS_S3_ACCESS_KEY_ID = AWS_S3_ACCESS_KEY_ID
-
 AWS_S3_SECRET_ACCESS_KEY = AWS_S3_SECRET_ACCESS_KEY
-
-AWS_REGION               = 'ap-northeast-2'
-AWS_STORAGE_BUCKET_NAME  = 'ding-s3-bucket'
-AWS_S3_CUSTOM_DOMAIN     = '%s.s3.%s.amazonaws.com' % (
-    AWS_STORAGE_BUCKET_NAME, AWS_REGION)
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_DEFAULT_ACL          = 'public-read'
-AWS_LOCATION             = 'static'
-STATIC_URL               = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE      = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_DIRS         = [
-    os.path.join(BASE_DIR, 'static')
-]
-
-DEFAULT_FILE_STORAGE = 'core.asset_storage.MediaStorage'
+AWS_S3_CONFIG = AWS_S3_CONFIG

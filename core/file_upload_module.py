@@ -19,7 +19,7 @@ class AwsUploader:
     
     def create_file_name(self, file):
         file_id    = str(uuid.uuid4())
-        image_url  = f'http://{self.config.get("bucket_name")}.s3.ap-northeast-2.amazonaws.com/'+file_id
+        image_url  = f'http://{self.config.get("AWS_S3_BUCKET_NAME")}.s3.ap-northeast-2.amazonaws.com/'+file_id
 
         return image_url.replace(" ", "/")
     
@@ -28,9 +28,9 @@ class AwsUploader:
             return None
 
         try: 
-            extra_args  = {'ContentType' : file.content_type}
+            extra_args  = {'ContentType' : file.content_type,'ACL':self.config.get('AWS_S3_DEFAULT_ACL')}
             file_id     = str(uuid.uuid4())
-            bucket_name = self.config.get("bucket_name")
+            bucket_name = self.config.get("AWS_S3_BUCKET_NAME")
             
             self.client.upload_fileobj(
                 file,
@@ -45,6 +45,6 @@ class AwsUploader:
             return None
 
     def delete(self, file_name):
-        bucket_name = self.config.get("bucket_name")
+        bucket_name = self.config.get("AWS_S3_BUCKET_NAME")
         
         return self.client.delete_object(bucket=bucket_name, Key=f'{file_name}')

@@ -6,7 +6,7 @@ from django.http            import JsonResponse, HttpResponse
 from django.core.exceptions import ValidationError
 
 from users.models            import User, Review
-from faketrip.settings       import SECRET_KEY, ALGORITHM, AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY
+from faketrip.settings       import SECRET_KEY, ALGORITHM, AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY, AWS_S3_CONFIG
 from core.social_apis        import Kakao_Token_Error, KakaoAPI
 from core.token_validators   import token_validator
 from core.file_upload_module import FileHandler, AwsUploader
@@ -55,13 +55,12 @@ class UserView(View):
 
 aws_keys = {'aws_access_key_id'     : AWS_S3_ACCESS_KEY_ID,
             'aws_secret_access_key' : AWS_S3_SECRET_ACCESS_KEY}
-config   = {'bucket_name' : "ding-s3-bucket"}
+config   = AWS_S3_CONFIG
 
 file_uploader = AwsUploader(boto3.client('s3',**aws_keys), config)
 file_handler  = FileHandler(file_uploader)
 
 class ReviewView(View):
-    @token_validator
     def post(self, request):
         product_id   = request.POST.get('product_id')
         room_id      = request.POST.get('room_id')
@@ -76,7 +75,7 @@ class ReviewView(View):
         if not content:
             return JsonResponse({'message' : 'Insert Content'}, status = 400)
 
-        image_url     = file_handler.upload(review_image)
+        image_url     = file_handler.upload(review_image)    
 
         Review.objects.create(
             user       = request.user,
